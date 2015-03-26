@@ -2,6 +2,10 @@
 	background-color: white;
 }
 
+.login_button {
+	width: 100% !important;
+}
+
 img.center {
 	display: block;
 	margin-left: auto;
