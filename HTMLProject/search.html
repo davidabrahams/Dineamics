@@ -13,19 +13,30 @@
 
 		<div data-role="page">
 
-			<div data-role="header">
+			<div data-role="header" class=".ui-header">
 				<div align="center">
-					<h1>Search</h1>
+					<br/>
+					<img src="SEARCH.png" style="width: 17%" class="center"/>
 				</div>
 			</div>
 
 			<div data-role="main" class="ui-content ui-body">
 				<label for="txt-type">Type of Food</label>
 				<input type="text" name="txt-type" id="txt-type" />
-
-				<label for="slider-fill">Distance (miles):</label>
-				<input type="range" name="slider-fill" id="slider-fill" value="5" min="0" max="30" data-highlight="true" />
-
+				<br/>
+				
+				<label for="slider-fill">Distance from me (miles):</label>
+				<input type="range" name="slider-fill" id="slider-fill" value="5" min="0" max="30"/>
+				<br/><br/>
+				
+				<label for="slider-fill">Price per person:</label>
+				<input type="range" name="slider-fill" id="slider-fill" value="5" min="0" max="150"/>
+				<br/><br/>
+				
+				
+				<input type="submit" value="Add another Person!">
+				<input type="submit" value="Get Reastaurant!">
+				
 			</div>
 		</div>
 	</body>
