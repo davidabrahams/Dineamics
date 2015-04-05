@@ -80,5 +80,8 @@ def filter_data(name,locality):
     return int(sum(prices)/len(prices))
 
 if __name__ == '__main__':
-    filter_data(name,locality)
+    try: 
+        print filter_data("clover","")
 
+    except:
+        print "We're sorry! Price data isn't available. Check the website!"

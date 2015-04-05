@@ -63,7 +63,7 @@ def request(host, path, url_params=None):
     oauth_request.sign_request(oauth2.SignatureMethod_HMAC_SHA1(), consumer, token)
     signed_url = oauth_request.to_url()
     
-    print u'Querying {0} ...'.format(url)
+    u'Querying {0} ...'.format(url)
 
     conn = urllib2.urlopen(signed_url, None)
     try:
@@ -111,12 +111,12 @@ def query_api(term, location):
     businesses = response.get('businesses')
 
     if not businesses:
-        print u'No businesses for {0} in {1} found.'.format(term, location)
+        u'No businesses for {0} in {1} found.'.format(term, location)
         return
 
     business_id = businesses[0]['id']
 
-    print u'{0} businesses found, querying business info for the top result "{1}" ...'.format(
+    u'{0} businesses found, querying business info for the top result "{1}" ...'.format(
         len(businesses),
         business_id
     )
