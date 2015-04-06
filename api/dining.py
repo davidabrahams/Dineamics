@@ -2,7 +2,7 @@ import pprint
 import api
 import locu_setup
 
-TERM = 'asian food'
+TERM = 'neptune oyster'
 LOCATION = 'Boston, MA'
 
 def get_name(response):
@@ -30,7 +30,7 @@ def get_categories(response):
 
 def main(TERM,LOCATION):
     response = api.main(TERM,LOCATION)
-    pprint.pprint(response)
+    
     name = get_name(response)
     address = get_address(response)
     categories = get_categories(response)
