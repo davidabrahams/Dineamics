@@ -40,6 +40,7 @@ def get_menu(name,locality):
     except:
         return "We're sorry! Price data isn't available. Check the website!"
 
+
 def filter_data(name,locality):
     try:
         response_data = get_menu(name,locality)["objects"][0]["menus"]
@@ -56,14 +57,14 @@ def filter_data(name,locality):
         for i in range(len(sections)):
             temp = sections[i]
             dict1 = temp['subsections']
-
+            
             for j in range(len(dict1)):
                 temp1 = dict1[j]
                 dict2 = temp1['contents']
 
                 for k in range(len(dict2)):
                     temp2 = dict2[k]
-
+                   
                     try:
                         money = (temp2['price'].encode('utf-8'))
 
@@ -77,11 +78,22 @@ def filter_data(name,locality):
                     except:
                         pass
 
-    return int(sum(prices)/len(prices))
+    return prices
+
+def get_topthirty(name,locality):
+    
+    prices = filter_data(name,locality)
+    
+    if prices != "We're sorry! Price data isn't available. Check the website!":
+        sorted_prices = sorted(prices,reverse=True)
+        
+        num = int(.25*len(sorted_prices))
+        num1 = int(.5*len(sorted_prices))
+        return int(sum(sorted_prices[num:num1])/(num1-num))
+    
+    else:
+        return "We're sorry! Price data isn't available. Check the website!"
 
 if __name__ == '__main__':
-    try: 
-        print filter_data("clover","")
+    get_topthirty(name,locality)
 
-    except:
-        print "We're sorry! Price data isn't available. Check the website!"
