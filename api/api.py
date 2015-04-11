@@ -100,7 +100,7 @@ def get_business(business_id):
 
     return request(API_HOST, business_path)
 
-def query_api(term, location, index):
+def query_api(term, location):
     """Queries the API by the input values from the user.
     Args:
         term (str): The search term to query.
@@ -115,7 +115,7 @@ def query_api(term, location, index):
         u'No businesses for {0} in {1} found.'.format(term, location)
         return
     
-    business_id = businesses[index]['id']
+    business_id = businesses[0]['id']
 
     u'{0} businesses found, querying business info for the top result "{1}" ...'.format(
         len(businesses),

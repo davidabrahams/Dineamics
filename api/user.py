@@ -54,11 +54,12 @@ def get_users_restaurants(users):
             address = dining.get_address(response)
             locality = dining.get_locality(response)
             categories = dining.get_categories(response)
+            image = dining.get_image(response)
 
             price = None
             # TODO: WE'RE NOT USING PRICE DATA SO ITS NONE
             #price = locu_setup.get_topthirty(dining.get_name_nonenc(response), dining.get_locality(response))
-            rest = restaurant.Restaurant(name, address, locality, categories, price)
+            rest = restaurant.Restaurant(name, address, locality, categories, price, image)
             restaurants.append(rest)
         restaurant_lists.append(restaurants)
     return restaurant_lists

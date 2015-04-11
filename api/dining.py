@@ -12,6 +12,9 @@ def get_name(response):
 def get_name_nonenc(response):
     return response["name"]
 
+def get_image(response):
+    return response["image_url"]
+
 def get_address(response):
     thing = []
     address = response["location"]["display_address"]
@@ -36,6 +39,7 @@ def main(TERM,LOCATION):
     response = api.main(TERM,LOCATION)
     
     name = get_name(response)
+    print get_image(response)
 
     address = get_address(response)
     categories = get_categories(response)

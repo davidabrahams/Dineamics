@@ -2,12 +2,13 @@ __author__ = 'davidabrahams'
 
 
 class Restaurant:
-    def __init__(self, name, address, locality, categories, price):
+    def __init__(self, name, address, locality, categories, price, image):
         self.name = name
         self.address = address
         self.locality = locality
         self.categories = categories
         self.price = price
+        self.image = image
 
     def __str__(self):
         return self.name + ', ' + self.locality
