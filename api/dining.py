@@ -6,6 +6,10 @@ TERM = 'mexican'
 LOCATION = 'Boston, MA'
 
 def get_name(response):
+
+    return response["name"].encode('utf-8')
+
+def get_name_nonenc(response):
     return response["name"]
 
 def get_address(response):
@@ -32,10 +36,12 @@ def main(TERM,LOCATION):
     response = api.main(TERM,LOCATION)
     
     name = get_name(response)
+
     address = get_address(response)
     categories = get_categories(response)
     print ""
-    print "Your generated restaurant is " + name + '!'
+    # print "Your generated restaurant is " + name + '!'
+    print name
     print ""
     print "The address of " + name + " is:"
     for i in address:
@@ -45,7 +51,7 @@ def main(TERM,LOCATION):
     for i in categories:
         print i[0]
     print ""
-    price = locu_setup.get_topthirty(name, get_locality(response))
+    price = locu_setup.get_topthirty(get_name_nonenc(response), get_locality(response))
     if price != None:
         print "The average price per person at this restaurant is:"
         print price

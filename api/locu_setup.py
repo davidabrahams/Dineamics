@@ -1,6 +1,7 @@
 import urllib
 import urllib2
 import json
+from unidecode import unidecode
 
 LOCU_BASE = 'http://api.locu.com/v1_0/venue/search/?'
 API_KEY = 'f60f052cf5d0473b25022a62a73b107cf0db0aad'
@@ -12,8 +13,7 @@ def get_locu_url(name, locality):
     :param locality: The town/city a restaurant is in (check locality documentation at https://dev.locu.com/documentation/v1/)
     :return: A url to query the locu api
     """
-    return LOCU_BASE + urllib.urlencode([('name', name), ('locality', locality), ('api_key', API_KEY)])
-
+    return LOCU_BASE + urllib.urlencode([('name', unidecode(name)), ('locality', locality), ('api_key', API_KEY)])
 
 def get_ID(name, locality):
     """
@@ -58,41 +58,40 @@ def get_menu(name, locality):
 def filter_data(name, locality):
     response_data = get_menu(name, locality)
 
-    if response_data == None:
-        return None
-
     prices = []
     key = 'price'
+    if response_data != None:
 
-    for entry in response_data:
+        for entry in response_data:
 
-        sections = entry['sections']
+            sections = entry['sections']
 
-        for section in sections:
+            for section in sections:
 
-            subsections = section['subsections']
+                subsections = section['subsections']
 
-            for subsection in subsections:
+                for subsection in subsections:
 
-                contents = subsection['contents']
+                    contents = subsection['contents']
 
-                for content in contents:
+                    for content in contents:
 
-                    if 'price' in content:
+                        if 'price' in content:
 
-                        money = (content['price'].encode('utf-8'))
+                            money = (content['price'].encode('utf-8'))
 
-                        try:
-                            money = float(money)
-                            prices.append(money)
-                        except ValueError:
-                            #If the string can't be converted to a float, leave it the fuck alone
-                            pass
+                            try:
+                                money = float(money)
+                                prices.append(money)
+                            except ValueError:
+                                #If the string can't be converted to a float, leave it the fuck alone
+                                pass
 
     return prices
 
 
 def get_topthirty(name, locality):
+
     prices = filter_data(name, locality)
 
     if prices != []:
