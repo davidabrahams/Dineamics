@@ -95,7 +95,7 @@ def filter_data(name, locality):
 def get_topthirty(name, locality):
     prices = filter_data(name, locality)
 
-    if prices != None:
+    if prices != []:
 
         sorted_prices = sorted(prices, reverse=True)
 
