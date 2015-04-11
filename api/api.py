@@ -23,7 +23,7 @@ import oauth2
 API_HOST = 'api.yelp.com'
 # DEFAULT_TERM = 'sushi'
 # DEFAULT_LOCATION = 'Boston, MA'
-SEARCH_LIMIT = 10
+SEARCH_LIMIT = 5
 SEARCH_PATH = '/v2/search/'
 BUSINESS_PATH = '/v2/business/'
 
@@ -100,11 +100,12 @@ def get_business(business_id):
 
     return request(API_HOST, business_path)
 
-def query_api(term, location):
+def query_api(term, location, index):
     """Queries the API by the input values from the user.
     Args:
         term (str): The search term to query.
         location (str): The location of the business to query.
+        index: the number restaurant you want
     """
     response = search(term, location)
 
@@ -114,7 +115,7 @@ def query_api(term, location):
         u'No businesses for {0} in {1} found.'.format(term, location)
         return
     
-    business_id = businesses[0]['id']
+    business_id = businesses[index]['id']
 
     u'{0} businesses found, querying business info for the top result "{1}" ...'.format(
         len(businesses),
@@ -123,6 +124,45 @@ def query_api(term, location):
 
     response = get_business(business_id)
     return response
+
+def get_responses(term, location):
+
+    response = search(term, location)
+
+    businesses = response.get('businesses')
+
+    if not businesses:
+        u'No businesses for {0} in {1} found.'.format(term, location)
+        return
+
+    responses = []
+
+    for i in range(SEARCH_LIMIT):
+
+        business_id = businesses[i]['id']
+
+        u'{0} businesses found, querying business info for the top result "{1}" ...'.format(
+            len(businesses),
+            business_id
+        )
+        response = get_business(business_id)
+        responses.append(response)
+
+    return responses
+
+def get_restaurants(term, location):
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-q', '--term', dest='term', default=term, type=str, help='Search term (default: %(default)s)')
+    parser.add_argument('-l', '--location', dest='location', default=location, type=str, help='Search location (default: %(default)s)')
+
+    input_values = parser.parse_args()
+
+    try:
+        restaurants = get_responses(input_values.term, input_values.location)
+        return restaurants
+    except urllib2.HTTPError as error:
+        sys.exit('Encountered HTTP error {0}. Abort program.'.format(error.code))
 
 
 def main(DEFAULT_TERM,DEFAULT_LOCATION):
