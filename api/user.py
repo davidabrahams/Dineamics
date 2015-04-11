@@ -2,12 +2,14 @@ __author__ = 'davidabrahams'
 
 
 import api
-import dining
-import locu_setup
+import restaurant_attribute_parser
 import restaurant
 
 
 class User:
+    """
+    A class representing a user, contains his search criterion, location, and price
+    """
 
     def __init__(self, term, location, price_max):
         self.term = term
@@ -49,17 +51,18 @@ def get_users_restaurants(users):
         print
         responses = api.get_restaurants(user.term, user.location)
         for i, response in enumerate(responses):
-            print 'Found response #' + str(i + 1)
-            name = dining.get_name(response)
-            address = dining.get_address(response)
-            locality = dining.get_locality(response)
-            categories = dining.get_categories(response)
-            image = dining.get_image(response)
+            # print 'Found response #' + str(i + 1)
+            name = restaurant_attribute_parser.get_name(response)
+            address = restaurant_attribute_parser.get_address(response)
+            locality = restaurant_attribute_parser.get_locality(response)
+            categories = restaurant_attribute_parser.get_categories(response)
+            image = restaurant_attribute_parser.get_image(response)
+            unenc_name = restaurant_attribute_parser.get_name_nonenc(response)
 
             price = None
             # TODO: WE'RE NOT USING PRICE DATA SO ITS NONE
-            #price = locu_setup.get_topthirty(dining.get_name_nonenc(response), dining.get_locality(response))
-            rest = restaurant.Restaurant(name, address, locality, categories, price, image)
+            #price = locu_setup.get_price_of_mains(dining.get_name_nonenc(response), dining.get_locality(response))
+            rest = restaurant.Restaurant(name, address, locality, categories, price, image, unenc_name)
             restaurants.append(rest)
         restaurant_lists.append(restaurants)
     return restaurant_lists

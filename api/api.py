@@ -101,11 +101,10 @@ def get_business(business_id):
     return request(API_HOST, business_path)
 
 def query_api(term, location):
-    """Queries the API by the input values from the user.
+    """Queries the API by the input values from the user. Returns the top restaurant
     Args:
         term (str): The search term to query.
         location (str): The location of the business to query.
-        index: the number restaurant you want
     """
     response = search(term, location)
 
@@ -125,7 +124,9 @@ def query_api(term, location):
     response = get_business(business_id)
     return response
 
-def get_responses(term, location):
+def query_api_multiple(term, location):
+    """Similar to query_api, however returns a list of top restaurants of length SEARCH_LIMIT
+    """
 
     response = search(term, location)
 
@@ -151,6 +152,8 @@ def get_responses(term, location):
     return responses
 
 def get_restaurants(term, location):
+    """Uses query_api_multiple to return top restaurants while checking for HTTP errors
+    """
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-q', '--term', dest='term', default=term, type=str, help='Search term (default: %(default)s)')
@@ -159,13 +162,15 @@ def get_restaurants(term, location):
     input_values = parser.parse_args()
 
     try:
-        restaurants = get_responses(input_values.term, input_values.location)
+        restaurants = query_api_multiple(input_values.term, input_values.location)
         return restaurants
     except urllib2.HTTPError as error:
         sys.exit('Encountered HTTP error {0}. Abort program.'.format(error.code))
 
 
-def main(DEFAULT_TERM,DEFAULT_LOCATION):
+def get_restaurant(DEFAULT_TERM,DEFAULT_LOCATION):
+    """same as get_restaurants, however uses query_api for a single search
+    """
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-q', '--term', dest='term', default=DEFAULT_TERM, type=str, help='Search term (default: %(default)s)')
@@ -181,4 +186,4 @@ def main(DEFAULT_TERM,DEFAULT_LOCATION):
 
 
 if __name__ == '__main__':
-    main()
+    get_restaurant()

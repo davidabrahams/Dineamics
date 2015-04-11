@@ -90,7 +90,7 @@ def filter_data(name, locality):
     return prices
 
 
-def get_topthirty(name, locality):
+def get_price_of_mains(name, locality):
 
     prices = filter_data(name, locality)
 
@@ -108,5 +108,5 @@ def get_topthirty(name, locality):
 if __name__ == '__main__':
     name = 'Neptune Oyster'
     locality = 'Boston'
-    print get_topthirty(name, locality)
+    print get_price_of_mains(name, locality)
 
