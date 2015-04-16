@@ -55,8 +55,8 @@ def get_menu(name, locality):
         return None
 
 
-def filter_data(name, locality):
-    response_data = get_menu(name, locality)
+def filter_data(menu):
+    response_data = menu
 
     prices = []
     key = 'price'
@@ -90,17 +90,22 @@ def filter_data(name, locality):
     return prices
 
 
-def get_price_of_mains(name, locality):
+def get_price_of_mains(menu):
 
-    prices = filter_data(name, locality)
+    prices = filter_data(menu)
 
-    if prices != []:
+    if len(prices) >= 4:
 
         sorted_prices = sorted(prices, reverse=True)
 
         num = int(round(.25 * len(sorted_prices)))
         num1 = int(round(.5 * len(sorted_prices)))
-        return round(sum(sorted_prices[num:num1]) / (num1 - num), 2)
+        try:
+            return round(sum(sorted_prices[num:num1]) / (num1 - num), 2)
+        except ZeroDivisionError:
+            print 'Taking the average failed. The menu contained the following prices:'
+            print prices
+            return None
     else:
         return None
 
@@ -108,5 +113,5 @@ def get_price_of_mains(name, locality):
 if __name__ == '__main__':
     name = 'Neptune Oyster'
     locality = 'Boston'
-    print get_price_of_mains(name, locality)
+    print filter_data(get_menu(name, locality))
 

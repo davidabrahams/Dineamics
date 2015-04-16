@@ -10,13 +10,10 @@ def get_rest_score_dict(list_of_lists_of_restaurants):
     rest_to_score = {}
     for list in list_of_lists_of_restaurants:
         for i, restaurant in enumerate(list):
-            key = restaurant.get_duplicate(rest_to_score.keys())
-            print restaurant
-            if key == None:
-                rest_to_score[restaurant] = rank_to_score(i)
+            if restaurant in rest_to_score:
+                rest_to_score[restaurant] = rest_to_score[restaurant] + rank_to_score(i)
             else:
-                print 'Found match!'
-                rest_to_score[key] = rest_to_score[key] + rank_to_score(i)
+                rest_to_score[restaurant] = rank_to_score(i)
 
     return rest_to_score
 
@@ -27,8 +24,7 @@ def get_best_rests(score_dict):
 
 def get_top_rest(best_rests):
     top_rest = best_rests[0][0]
-    top_rest.price = locu_setup.get_price_of_mains(top_rest.unencoded_name, top_rest.locality)
-    return best_rests[0][0]
+    return top_rest
 
 if __name__ == '__main__':
     users = user.create_users()
