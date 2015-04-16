@@ -4,6 +4,9 @@ __author__ = 'davidabrahams'
 import api
 import restaurant_attribute_parser
 import restaurant
+import locu_database
+
+FILE_NAME = 'database.txt'
 
 
 class User:
@@ -45,6 +48,7 @@ def create_users():
 
 def get_users_restaurants(users):
     restaurant_lists = []
+    database = MenuDatabase.load(FILE_NAME)
     for index, user in enumerate(users):
         restaurants = []
         print 'Querying Yelp Api for user #' + str(index + 1)
@@ -60,6 +64,11 @@ def get_users_restaurants(users):
             unenc_name = restaurant_attribute_parser.get_name_nonenc(response)
 
             price = None
+
+            if (dining.get_name_nonenc(response), dining.get_locality(response)) in database.data:
+                pass
+
+
             # TODO: WE'RE NOT USING PRICE DATA SO ITS NONE
             #price = locu_setup.get_price_of_mains(dining.get_name_nonenc(response), dining.get_locality(response))
             rest = restaurant.Restaurant(name, address, locality, categories, price, image, unenc_name)
