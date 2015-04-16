@@ -23,7 +23,7 @@ import oauth2
 API_HOST = 'api.yelp.com'
 # DEFAULT_TERM = 'sushi'
 # DEFAULT_LOCATION = 'Boston, MA'
-SEARCH_LIMIT = 20
+SEARCH_LIMIT = 5
 SEARCH_PATH = '/v2/search/'
 BUSINESS_PATH = '/v2/business/'
 

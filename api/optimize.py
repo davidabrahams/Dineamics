@@ -11,6 +11,7 @@ def get_rest_score_dict(list_of_lists_of_restaurants):
     for list in list_of_lists_of_restaurants:
         for i, restaurant in enumerate(list):
             key = restaurant.get_duplicate(rest_to_score.keys())
+            print restaurant
             if key == None:
                 rest_to_score[restaurant] = rank_to_score(i)
             else:
