@@ -5,7 +5,9 @@ import locu_setup
 import api
 import restaurant_attribute_parser
 import restaurant
+import locu_database
 
+FILE_NAME = 'database.txt'
 
 def rank_to_score(rank):
     return 20 - rank
@@ -46,27 +48,72 @@ def get_top_rest(best_rests):
     top_rest.price = locu_setup.get_price_of_mains(top_rest.unencoded_name, top_rest.locality)
     return best_rests[0][0]
 
-def get_cat_restaurant(categories,location):
-    categories = str(categories)
-    response = api.get_restaurant(categories,location)
+def get_cat_restaurant(categories,location,price):
+    if len(categories)<=4:
+        categories = str(categories[0:3])
+    else:
+        categories = categories
+    
+    print categories
+    responses = api.get_restaurants(categories,location)
+    best_rests = []
 
-    name = restaurant_attribute_parser.get_name(response)
-    address = restaurant_attribute_parser.get_address(response)
-    locality = restaurant_attribute_parser.get_locality(response)
-    attribute_categories = restaurant_attribute_parser.get_categories(response)
-    image = restaurant_attribute_parser.get_image(response)
-    price = get_top_rest
-    unenc_name = restaurant_attribute_parser.get_name_nonenc(response)
+    database = locu_database.load(FILE_NAME)
+    #TODO: search each restaurant in database with new categories
+    #select restaurant with closest price
+    for i, response in enumerate(responses):
 
-    best_rest = restaurant.Restaurant(name, address, locality, categories, price, image, unenc_name)
-    print 'Your Restaurant is: ' + best_rest.name +' in ' + locality + '!'
+        name = restaurant_attribute_parser.get_name(response)
+        address = restaurant_attribute_parser.get_address(response)
+        locality = restaurant_attribute_parser.get_locality(response)
+        attribute_categories = restaurant_attribute_parser.get_categories(response)
+        image = restaurant_attribute_parser.get_image(response)
+        unenc_name = restaurant_attribute_parser.get_name_nonenc(response)
+
+        if ((unenc_name, locality)) in database.data:
+                print 'Found ' + unenc_name + ' in database!'
+                menu = database.data[(unenc_name, locality)]
+        else:
+            print 'Querying Locu for ' + unenc_name + '...'
+            menu = locu_setup.get_menu(unenc_name, locality)
+            database.data[(unenc_name, locality)] = menu
+
+        price = locu_setup.get_price_of_mains(menu)
+
+        rest = restaurant.Restaurant(name, address, locality, categories, price, image, unenc_name)
+        best_rests.append(rest)
+
+    return best_rests
+
+def get_best_restaurant(best_rests,price):
+    #TODO: NOT FUCKING WORKING SHIT
+    best_rest = best_rests[0]
+
+    for i, restaurant in enumerate(best_rests):
+        print restaurant.price
+        if restaurant.price == None:
+            best_rest = best_rest
+
+        elif restaurant.price < price:
+            best_rest = restaurant
+            price = restaurant.price
+
+        else:
+            best_rest = best_rest
+
+    print 'Your Restaurant is: ' + best_rest.name +' in ' + best_rest.locality + ' for $' + str(best_rest.price) + '!!'
 
 if __name__ == '__main__':
     users = user.create_users()
     user_rests = user.get_users_restaurants(users)
-    location = 'boston'
+    location = user.optimize_price_location(users)[1]
+    price = user.optimize_price_location(users)[0]
     score_dict = get_rest_score_dict(user_rests)
     sorted_rests = get_best_rests(score_dict)
-    print get_cat_restaurant(sorted_rests,location)
+    best_rests = get_cat_restaurant(sorted_rests,location,price)
+    print get_best_restaurant(best_rests,price)
+    #TODO: 
+    #create optimizing price/location programs
+    #feed in optimized price and location from users
     
    

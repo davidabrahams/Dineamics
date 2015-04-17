@@ -47,10 +47,23 @@ def create_users():
 
     return users
 
+def optimize_price_location(users):
+    price = []
+    location = []
+    for index, user in enumerate(users):    
+        price.append(int(user.price_max))
+        location.append(user.location)
+    price = sum(price)/len(price)
+
+    return [price, location[0]]
+
 def get_users_restaurants(users):
     restaurant_lists = []
+    
     print 'Loading database...'
+
     database = locu_database.load(FILE_NAME)
+
     for index, user in enumerate(users):
         restaurants = []
         print 'Querying Yelp Api for user #' + str(index + 1)
