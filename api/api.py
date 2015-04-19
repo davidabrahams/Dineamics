@@ -23,7 +23,7 @@ import oauth2
 API_HOST = 'api.yelp.com'
 # DEFAULT_TERM = 'sushi'
 # DEFAULT_LOCATION = 'Boston, MA'
-SEARCH_LIMIT = 5
+SEARCH_LIMIT = 20
 SEARCH_PATH = '/v2/search/'
 BUSINESS_PATH = '/v2/business/'
 
@@ -138,7 +138,7 @@ def query_api_multiple(term, location):
 
     responses = []
 
-    for i in range(SEARCH_LIMIT):
+    for i in range(len(businesses)):
 
         business_id = businesses[i]['id']
 
@@ -151,7 +151,7 @@ def query_api_multiple(term, location):
 
     return responses
 
-def get_restaurants(term, location):
+def get_restaurant_responses(term, location):
     """Uses query_api_multiple to return top restaurants while checking for HTTP errors
     """
     parser = argparse.ArgumentParser()
@@ -168,8 +168,8 @@ def get_restaurants(term, location):
         sys.exit('Encountered HTTP error {0}. Abort program.'.format(error.code))
 
 
-def get_restaurant(DEFAULT_TERM,DEFAULT_LOCATION):
-    """same as get_restaurants, however uses query_api for a single search
+def get_restaurant_response(DEFAULT_TERM,DEFAULT_LOCATION):
+    """same as get_restaurant_responses, however uses query_api for a single search
     """
     parser = argparse.ArgumentParser()
 
@@ -186,4 +186,4 @@ def get_restaurant(DEFAULT_TERM,DEFAULT_LOCATION):
 
 
 if __name__ == '__main__':
-    get_restaurant()
+    get_restaurant_response()

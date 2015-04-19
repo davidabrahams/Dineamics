@@ -55,7 +55,7 @@ def optimize_price_location(users):
         location.append(user.location)
     price = sum(price)/len(price)
 
-    return [price, location[0]]
+    return price, location[0]
 
 def get_users_restaurants(users):
     restaurant_lists = []
@@ -68,7 +68,7 @@ def get_users_restaurants(users):
         restaurants = []
         print 'Querying Yelp Api for user #' + str(index + 1)
         print
-        responses = api.get_restaurants(user.term, user.location)
+        responses = api.get_restaurant_responses(user.term, user.location)
         for i, response in enumerate(responses):
             # print 'Found response #' + str(i + 1)
             name = restaurant_attribute_parser.get_name(response)

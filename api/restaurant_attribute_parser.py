@@ -36,12 +36,14 @@ def get_locality(response):
 
 
 def get_categories(response):
-    thing = []
+    cats = []
+    if "categories" not in response:
+        return []
     categories = response["categories"]
-    for item in response["categories"]:
-        thing.append(item)
-
-    return thing
+    for item in categories:
+        # Each category is a list of different spellings of that category, ie ['Mexican', 'mexican']
+        cats.append(item[0])
+    return cats
 
 
 def query_and_print_restaurant(TERM, LOCATION):
@@ -49,7 +51,7 @@ def query_and_print_restaurant(TERM, LOCATION):
     Makes an API Query using the TERM and LOCATION parameters. Then parses the response data and prints it. Also finds
     price information from Locu API query.
     """
-    response = api.get_restaurant(TERM, LOCATION)
+    response = api.get_restaurant_response(TERM, LOCATION)
 
     name = get_name(response)
     print get_image(response)
