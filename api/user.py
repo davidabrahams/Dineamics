@@ -20,8 +20,36 @@ class User:
         self.location = location
         self.price_max = price_max
 
+
     def __str__(self):
         return 'User looking for ' + self.term + ' in ' + self.location + ', paying up to $' + self.price_max + '.'
+
+    def get_restaurants(self, database):
+        restaurants = []
+        print "Querying Yelp for " + self.term + ", " + self.location + "..."
+        print
+        responses = api.get_restaurant_responses(self.term, self.location)
+        for i, response in enumerate(responses):
+            name = restaurant_attribute_parser.get_name(response)
+            address = restaurant_attribute_parser.get_address(response)
+            locality = restaurant_attribute_parser.get_locality(response)
+            categories = restaurant_attribute_parser.get_categories(response)
+            image = restaurant_attribute_parser.get_image(response)
+            unenc_name = restaurant_attribute_parser.get_name_nonenc(response)
+
+            if ((unenc_name, locality)) in database.data:
+                print 'Found ' + unenc_name + ' in database!'
+                menu = database.data[(unenc_name, locality)]
+            else:
+                print 'Querying Locu for ' + unenc_name + '...'
+                menu = locu_setup.get_menu(unenc_name, locality)
+                database.data[(unenc_name, locality)] = menu
+
+            price = locu_setup.get_price_of_mains(menu)
+
+            rest = restaurant.Restaurant(name, address, locality, categories, price, image, unenc_name)
+            restaurants.append(rest)
+        return restaurants
 
 
 def create_user():
@@ -47,7 +75,7 @@ def create_users():
 
     return users
 
-def optimize_price_location(users):
+def average_price_location(users):
     price = []
     location = []
     for index, user in enumerate(users):    
@@ -61,35 +89,12 @@ def get_users_restaurants(users):
     restaurant_lists = []
     
     print 'Loading database...'
+    print
 
     database = locu_database.load(FILE_NAME)
 
     for index, user in enumerate(users):
-        restaurants = []
-        print 'Querying Yelp Api for user #' + str(index + 1)
-        print
-        responses = api.get_restaurant_responses(user.term, user.location)
-        for i, response in enumerate(responses):
-            # print 'Found response #' + str(i + 1)
-            name = restaurant_attribute_parser.get_name(response)
-            address = restaurant_attribute_parser.get_address(response)
-            locality = restaurant_attribute_parser.get_locality(response)
-            categories = restaurant_attribute_parser.get_categories(response)
-            image = restaurant_attribute_parser.get_image(response)
-            unenc_name = restaurant_attribute_parser.get_name_nonenc(response)
-
-            if ((unenc_name, locality)) in database.data:
-                print 'Found ' + unenc_name + ' in database!'
-                menu = database.data[(unenc_name, locality)]
-            else:
-                print 'Querying Locu for ' + unenc_name + '...'
-                menu = locu_setup.get_menu(unenc_name, locality)
-                database.data[(unenc_name, locality)] = menu
-
-            price = locu_setup.get_price_of_mains(menu)
-
-            rest = restaurant.Restaurant(name, address, locality, categories, price, image, unenc_name)
-            restaurants.append(rest)
+        restaurants = user.get_restaurants(database)
         restaurant_lists.append(restaurants)
         print
     print 'Saving database...'
