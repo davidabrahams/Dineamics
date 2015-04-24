@@ -10,7 +10,7 @@ import locu_setup
 FILE_NAME = 'database.txt'
 
 
-class User:
+class User(object):
     """
     A class representing a user, contains his search criterion, location, and price
     """
@@ -38,7 +38,7 @@ class User:
             unenc_name = restaurant_attribute_parser.get_name_nonenc(response)
 
             if ((unenc_name, locality)) in database.data:
-                print 'Found ' + unenc_name + ' in database!'
+                print 'Found ' + unenc_name + ' in Locu database!'
                 menu = database.data[(unenc_name, locality)]
             else:
                 print 'Querying Locu for ' + unenc_name + '...'

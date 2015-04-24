@@ -1,7 +1,7 @@
 __author__ = 'davidabrahams'
 
 
-class Restaurant:
+class Restaurant(object):
     def __init__(self, name, address, locality, categories, price, image, unencoded_name):
         self.name = name
         self.address = address
@@ -22,9 +22,6 @@ class Restaurant:
 
     def __hash__(self):
         return hash(self.__key())
-
-    def equals(self, other):
-        return self.name == other.name and self.locality == other.locality
 
     def get_duplicate(self, rests):
         for rest in rests:

@@ -65,15 +65,17 @@ def get_best_restaurants(users):
     categories = extract_from_list(sorted_as_list)
     price, location = user.average_price_location(users)
     new_cats = []
-    current_terms = [u.term for u in users]
+    current_terms = [u.term.lower() for u in users]
     index = 0
-    while len(new_cats) < 5 and index < len(categories):
+    count = 0
+    while count < 3 and index < len(categories):
         if categories[index] not in current_terms:
-            new_cats.append(categories[index])
+            count += 1
+        new_cats.append(categories[index])
         index += 1
     for c in new_cats:
         users_to_test.append(user.User(c, location, price))
-        weights.append(cat_dict[c] / cat_dict[new_cats[0]])
+        weights.append((cat_dict[c] + 0.0) / cat_dict[new_cats[0]])
     rests_to_score = user.get_users_restaurants(users_to_test)
     print "Using weights: " + str(weights)
     rest_score_dict = get_rest_score_dict(rests_to_score, weights)
