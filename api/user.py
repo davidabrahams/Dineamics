@@ -6,6 +6,8 @@ import restaurant_attribute_parser
 import restaurant
 import locu_database
 import locu_setup
+import cPickle
+import MySQLdb
 
 FILE_NAME = 'database.txt'
 
@@ -91,7 +93,12 @@ def get_users_restaurants(users):
     print 'Loading database...'
     print
 
+    connection = MySQLdb.connect('127.0.0.1', 'testuser', 'test123', 'testdb')
+    cursor = connection.cursor()
+    cursor.execute("""SELECT features FROM Locu WHERE card = 'testCard'""")
+
     database = locu_database.load(FILE_NAME)
+
 
     for index, user in enumerate(users):
         restaurants = user.get_restaurants(database)
