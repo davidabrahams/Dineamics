@@ -68,4 +68,3 @@ def load(file_name):
     else:
         return MenuDatabase()
     """
-
