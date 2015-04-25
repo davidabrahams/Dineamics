@@ -13,14 +13,21 @@ FILE_NAME = 'database.txt'
 def rank_to_score(rank):
     return 40 - rank
 
-def get_rest_score_dict(list_of_lists_of_restaurants, weights):
+def rank_to_score_price(rank, user_price, rest_price):
+    deduction = 0
+    if rest_price != None and (rest_price > user_price):
+        deduction = (rest_price - user_price + 0.0) / (user_price) * 200
+    return 40 - rank - deduction
+
+
+def get_rest_score_dict(list_of_lists_of_restaurants, users, weights):
     rest_to_score = {}
-    for list, weight in zip(list_of_lists_of_restaurants, weights):
+    for list, user, weight in zip(list_of_lists_of_restaurants, users, weights):
         for i, restaurant in enumerate(list):
             if restaurant in rest_to_score:
-                rest_to_score[restaurant] = rest_to_score[restaurant] + rank_to_score(i) * weight
+                rest_to_score[restaurant] = rest_to_score[restaurant] + rank_to_score_price(i, user.price_max, restaurant.price) * weight
             else:
-                rest_to_score[restaurant] = rank_to_score(i) * weight
+                rest_to_score[restaurant] = rank_to_score_price(i, user.price_max, restaurant.price) * weight
 
     return rest_to_score
 
@@ -78,7 +85,8 @@ def get_best_restaurants(users):
         weights.append((cat_dict[c] + 0.0) / cat_dict[new_cats[0]])
     rests_to_score = user.get_users_restaurants(users_to_test)
     print "Using weights: " + str(weights)
-    rest_score_dict = get_rest_score_dict(rests_to_score, weights)
+    rest_score_dict = get_rest_score_dict(rests_to_score, users, weights)
+    print get_sorted_as_list(rest_score_dict)
     return extract_from_list(get_sorted_as_list(rest_score_dict))
 
 
@@ -86,6 +94,8 @@ if __name__ == '__main__':
 
     users = user.create_users()
     for rest in get_best_restaurants(users):
+        pass
         print rest
+        print str(rest.price)
     
    
