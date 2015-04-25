@@ -8,6 +8,7 @@ import locu_database
 import locu_setup
 import cPickle
 import MySQLdb
+import yelp_database
 
 FILE_NAME = 'database.txt'
 
@@ -26,11 +27,17 @@ class User(object):
     def __str__(self):
         return 'User looking for ' + self.term + ' in ' + self.location + ', paying up to $' + self.price_max + '.'
 
-    def get_restaurants(self, database):
+    def get_restaurants(self, yelp_database, database):
         restaurants = []
-        print "Querying Yelp for " + self.term + ", " + self.location + "..."
-        print
-        responses = api.get_restaurant_responses(self.term, self.location)
+        
+        if ((self.term, self.location)) in yelp_database.data:
+                print 'Found ' + self.term + ' in Yelp database!'
+                responses = yelp_database.data[(self.term, self.location)]
+        else:
+            print 'Querying Yelp for ' + self.term + '...'
+            responses = api.get_restaurant_responses(self.term, self.location)
+            yelp_database.data[(self.term, self.location)] = responses
+
         for i, response in enumerate(responses):
             name = restaurant_attribute_parser.get_name(response)
             address = restaurant_attribute_parser.get_address(response)
@@ -93,20 +100,26 @@ def get_users_restaurants(users):
     print 'Loading database...'
     print
 
+    """
+
     connection = MySQLdb.connect('127.0.0.1', 'testuser', 'test123', 'testdb')
     cursor = connection.cursor()
-    cursor.execute("""SELECT features FROM Locu WHERE card = 'testCard'""")
+    cursor.execute("SELECT features FROM Locu WHERE card = 'testCard')
+
+    """
 
     database = locu_database.load(FILE_NAME)
+    y_database = yelp_database.load('yelp.txt')
 
 
     for index, user in enumerate(users):
-        restaurants = user.get_restaurants(database)
+        restaurants = user.get_restaurants(y_database, database)
         restaurant_lists.append(restaurants)
         print
     print 'Saving database...'
     print
     database.save(FILE_NAME)
+    y_database.save('yelp.txt')
     return restaurant_lists
 
 if __name__ == '__main__':
