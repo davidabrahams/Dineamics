@@ -56,7 +56,7 @@ def load(file_name):
     database = None
     if result:
 
-        cursor.execute("""SELECT features FROM Locu WHERE card = 'testCard'""")
+        cursor.execute("SELECT features FROM Locu WHERE card = 'testCard'")
         rows = cursor.fetchall()
         print rows
         for each in rows:
