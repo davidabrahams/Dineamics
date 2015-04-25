@@ -31,7 +31,7 @@ def load(file_name):
 
 import MySQLdb as mdb
 import sys
-
+"""
 try:
     con = mdb.connect('localhost', 'testuser', 'test123', 'testdb')
     cur = con.cursor()
@@ -45,3 +45,4 @@ except mdb.Error, e:
 finally:
     if con:
         con.close()
+"""
