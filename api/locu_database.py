@@ -29,7 +29,7 @@ class MenuDatabase(object):
         cursor = connection.cursor()
         cursor.execute("DROP TABLE IF EXISTS Locu")
         cursor.execute("CREATE TABLE Locu(Id INT PRIMARY KEY AUTO_INCREMENT,  card VARCHAR(25),  features BLOB)")
-        cursor.execute("""INSERT INTO Locu VALUES (NULL, 'testCard', %s)""", (pickled, ))
+        cursor.execute("INSERT INTO Locu VALUES (NULL, 'testCard', %s)", (pickled, ))
         """
 
     def __str__(self):
