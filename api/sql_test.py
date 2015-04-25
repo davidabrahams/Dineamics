@@ -4,10 +4,10 @@ import MySQLdb
 
 class Alix(object):
 	def __init__(self):
-		self.name = 'alix'
+		self.data = {'alix': 5}
 
 ## Create a semi-complex list to pickle
-listToPickle = [(10, 10), (20, 10.0), (1.0, 2.0)]
+listToPickle = {'aLEX': 5}
 
 listToPickle = Alix()
 
@@ -39,4 +39,4 @@ for each in rows:
 	for pickledStoredList in each:
 		## Unpickle the stored string
 		unpickledList = cPickle.loads(pickledStoredList)
-		print unpickledList.name
+		print unpickledList.data

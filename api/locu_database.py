@@ -3,6 +3,8 @@
 from os.path import exists
 import sys
 import pickle
+import MySQLdb
+import cPickle
 
 
 class MenuDatabase(object):
@@ -18,6 +20,21 @@ class MenuDatabase(object):
         pickle.dump(self, f)
         f.close()
 
+        """
+        print self.data
+        pickled = cPickle.dumps(self.data)
+        print pickled
+
+        connection = MySQLdb.connect('127.0.0.1', 'testuser', 'test123', 'testdb')
+        cursor = connection.cursor()
+        cursor.execute("DROP TABLE IF EXISTS Locu")
+        cursor.execute("CREATE TABLE Locu(Id INT PRIMARY KEY AUTO_INCREMENT,  card VARCHAR(25),  features BLOB)")
+        cursor.execute("""INSERT INTO Locu VALUES (NULL, 'testCard', %s)""", (pickled, ))
+        """
+
+    def __str__(self):
+        return str(self.data)
+
 
 def load(file_name):
     if not exists(file_name):
@@ -29,19 +46,26 @@ def load(file_name):
         f.close()
         return obj
 
-import MySQLdb as mdb
-import sys
+    """
 
-try:
-    con = mdb.connect('localhost', 'testuser', 'test123', 'testdb')
-    cur = con.cursor()
-    cur.execute("SELECT VERSION()")
-    ver = cur.fetchone()
-    print "Database version : %s " % ver
+    connection = MySQLdb.connect('127.0.0.1', 'testuser', 'test123', 'testdb')
+    cursor = connection.cursor()
 
-except mdb.Error, e:
-    print "Error %d: %s" % (e.args[0], e.args[1])
-    sys.exit(1)
-finally:
-    if con:
-        con.close()
+    cursor.execute("SHOW TABLES LIKE 'Locu'")
+    result = cursor.fetchone()
+    database = None
+    if result:
+
+        cursor.execute("""SELECT features FROM Locu WHERE card = 'testCard'""")
+        rows = cursor.fetchall()
+        print rows
+        for each in rows:
+            print 'UNPICKLED!!!'
+            for pickled_database in each:
+                unpickled = cPickle.loads(pickled_database)
+                return unpickled
+        return MenuDatabase()
+    else:
+        return MenuDatabase()
+    """
+
