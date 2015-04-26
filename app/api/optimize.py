@@ -1,5 +1,5 @@
 __author__ = 'davidabrahams'
-from app.api import user
+import user
 
 
 def rank_to_score(rank, user_price, rest_price):

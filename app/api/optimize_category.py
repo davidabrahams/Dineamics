@@ -1,5 +1,5 @@
 __author__ = 'alixmccabe'
-from app.api import user
+import user
 
 FILE_NAME = 'database.txt'
 

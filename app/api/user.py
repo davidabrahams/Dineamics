@@ -1,6 +1,6 @@
 __author__ = 'davidabrahams'
 
-from app.api import locu_database, restaurant, locu_setup, api, restaurant_attribute_parser, yelp_database
+import locu_database, restaurant, locu_setup, api, restaurant_attribute_parser, yelp_database
 
 LOCU_FILE_NAME = 'locu_database.txt'
 YELP_FILE_NAME = 'yelp_database.txt'
