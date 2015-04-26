@@ -16,7 +16,7 @@ def rank_to_score(rank):
 def rank_to_score_price(rank, user_price, rest_price):
     deduction = 0
     if rest_price != None and (rest_price > user_price):
-        deduction = (rest_price - user_price + 0.0) / (user_price) * 200
+        deduction = (rest_price - user_price + 0.0) / user_price * 200
     return 40 - rank - deduction
 
 
@@ -25,9 +25,9 @@ def get_rest_score_dict(list_of_lists_of_restaurants, users, weights):
     for list, user, weight in zip(list_of_lists_of_restaurants, users, weights):
         for i, restaurant in enumerate(list):
             if restaurant in rest_to_score:
-                rest_to_score[restaurant] = rest_to_score[restaurant] + rank_to_score_price(i, user.price_max, restaurant.price) * weight
+                rest_to_score[restaurant] = rest_to_score[restaurant] + rank_to_score_price(i, float(user.price_max), restaurant.price) * weight
             else:
-                rest_to_score[restaurant] = rank_to_score_price(i, user.price_max, restaurant.price) * weight
+                rest_to_score[restaurant] = rank_to_score_price(i, float(user.price_max), restaurant.price) * weight
 
     return rest_to_score
 
@@ -95,7 +95,6 @@ if __name__ == '__main__':
     users = user.create_users()
     for rest in get_best_restaurants(users):
         pass
-        print rest
-        print str(rest.price)
+        print str(rest)
     
    

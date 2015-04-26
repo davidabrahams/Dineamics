@@ -10,7 +10,8 @@ import cPickle
 import MySQLdb
 import yelp_database
 
-FILE_NAME = 'database.txt'
+LOCU_FILE_NAME = 'locu_database.txt'
+YELP_FILE_NAME = 'yelp_database.txt'
 
 
 class User(object):
@@ -108,18 +109,18 @@ def get_users_restaurants(users):
 
     """
 
-    database = locu_database.load(FILE_NAME)
-    y_database = yelp_database.load('yelp.txt')
+    l_database = locu_database.load(LOCU_FILE_NAME)
+    y_database = yelp_database.load(YELP_FILE_NAME)
 
 
     for index, user in enumerate(users):
-        restaurants = user.get_restaurants(y_database, database)
+        restaurants = user.get_restaurants(y_database, l_database)
         restaurant_lists.append(restaurants)
         print
     print 'Saving database...'
     print
-    database.save(FILE_NAME)
-    y_database.save('yelp.txt')
+    l_database.save(LOCU_FILE_NAME)
+    y_database.save(YELP_FILE_NAME)
     return restaurant_lists
 
 if __name__ == '__main__':
