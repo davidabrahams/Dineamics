@@ -19,6 +19,8 @@ def get_name_nonenc(response):
 def get_image(response):
     return response["image_url"]
 
+def get_url(response):
+    return response["mobile_url"]
 
 def get_address(response):
     thing = []
@@ -70,13 +72,6 @@ def query_and_print_restaurant(TERM, LOCATION):
     for i in categories:
         print i[0]
     print ""
-    #price = locu_setup.get_price_of_mains(get_name_nonenc(response), get_locality(response))
-    if price != None:
-        print "The average price per person at this restaurant is:"
-        print price
-    else:
-        print "We're sorry! Price isn't available for this location."
-        print "Check the website!"
 
 
 if __name__ == '__main__':

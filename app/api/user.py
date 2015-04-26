@@ -38,6 +38,7 @@ class User(object):
             categories = restaurant_attribute_parser.get_categories(response)
             image = restaurant_attribute_parser.get_image(response)
             unenc_name = restaurant_attribute_parser.get_name_nonenc(response)
+            url = restaurant_attribute_parser.get_url(response)
 
             if ((unenc_name, locality)) in database.data:
                 print 'Found ' + unenc_name + ' in Locu database!'
@@ -49,7 +50,7 @@ class User(object):
 
             price = locu_setup.get_price_of_mains(menu)
 
-            rest = restaurant.Restaurant(name, address, locality, categories, price, image, unenc_name)
+            rest = restaurant.Restaurant(name, address, locality, categories, price, image, unenc_name, url)
             restaurants.append(rest)
         return restaurants
 
