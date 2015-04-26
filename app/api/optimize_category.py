@@ -1,12 +1,6 @@
 __author__ = 'alixmccabe'
-import user
-import restaurant
-import locu_setup
-import api
-import restaurant_attribute_parser
-import restaurant
-import locu_database
-import math
+from app.api import user
+
 FILE_NAME = 'database.txt'
 
 

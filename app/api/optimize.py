@@ -1,6 +1,5 @@
 __author__ = 'davidabrahams'
-import user
-import locu_setup
+from app.api import user
 
 
 def rank_to_score(rank, user_price, rest_price):

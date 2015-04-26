@@ -2,8 +2,7 @@
 This module is used to return attributes from a restaurant obtained from a Yelp API query
 """
 
-import api
-import locu_setup
+from app.api import locu_setup, api
 
 TERM = 'mexican'
 LOCATION = 'Boston, MA'

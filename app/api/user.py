@@ -1,14 +1,6 @@
 __author__ = 'davidabrahams'
 
-
-import api
-import restaurant_attribute_parser
-import restaurant
-import locu_database
-import locu_setup
-import cPickle
-import MySQLdb
-import yelp_database
+from app.api import locu_database, restaurant, locu_setup, api, restaurant_attribute_parser, yelp_database
 
 LOCU_FILE_NAME = 'locu_database.txt'
 YELP_FILE_NAME = 'yelp_database.txt'
