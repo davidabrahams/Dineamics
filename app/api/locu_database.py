@@ -3,8 +3,8 @@
 from os.path import exists
 import sys
 import pickle
-import MySQLdb
-import cPickle
+#import MySQLdb
+#import cPickle
 
 
 class MenuDatabase(object):
