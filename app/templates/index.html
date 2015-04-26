@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Dineamics</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.css" />
+		<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+	</head>
+
+	<body>
+
+		<div data-role="page">
+
+			<div data-role="header" class=".ui-header">
+				<div align="center">
+					<br/>
+					<img src="{{ url_for('static', filename = 'images/logo.png') }}" style="width: 17%" class="center"/>
+				</div>
+			</div>
+
+			<div role="main" class="ui-content ui-body">
+
+				<img src="{{ url_for('static', filename = 'images/dineamics.jpg') }}" style="width: 25%" class="center"/>
+
+				<form action="/getstarted" method="post">
+					<input type="submit" value="Get Started!"></input>
+				</form>
+
+			</div>
+
+			<div align="center" data-role="footer" class=".ui-footer">
+				<br/><br/>
+				<br/><br/>
+			</div>
+
+		</div>
+	</body>
+</html>

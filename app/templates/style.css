@@ -1,0 +1,23 @@
+.ui-header {
+    background: #70C091;
+}
+
+.ui-footer {
+	background: #FFDA6D;
+}
+
+
+.ui-body {
+	background-color: white;
+}
+
+.login_button {
+	width: 100% !important;
+}
+
+img.center {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	
+}
