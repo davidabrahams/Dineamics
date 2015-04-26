@@ -12,9 +12,9 @@ class User(object):
     """
 
     def __init__(self, term, location, price_max):
-        self.term = term
-        self.location = location
-        self.price_max = price_max
+        self.term = term.lower()
+        self.location = location.lower()
+        self.price_max = float(price_max)
 
 
     def __str__(self):
@@ -77,11 +77,16 @@ def create_users():
 
     return users
 
+def create_users(food_list, location_list, price_list):
+    return [User(food, location, price) for food, location, price in zip(food_list, location_list, price_list)]
+
+
+
 def average_price_location(users):
     price = []
     location = []
     for index, user in enumerate(users):    
-        price.append(int(user.price_max))
+        price.append(user.price_max)
         location.append(user.location)
     price = sum(price)/len(price)
 

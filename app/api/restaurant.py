@@ -12,7 +12,7 @@ class Restaurant(object):
         self.unencoded_name = unencoded_name
 
     def __str__(self):
-        return self.name + ', ' + self.locality
+        return self.name + ', ' + self.locality + ', ' + self.image
 
     def __eq__(self, other):
         return self.__key() == other.__key()

@@ -52,6 +52,8 @@ def query_and_print_restaurant(TERM, LOCATION):
     """
     response = api.get_restaurant_response(TERM, LOCATION)
 
+    print response
+
     name = get_name(response)
     print get_image(response)
 
@@ -68,7 +70,7 @@ def query_and_print_restaurant(TERM, LOCATION):
     for i in categories:
         print i[0]
     print ""
-    price = locu_setup.get_price_of_mains(get_name_nonenc(response), get_locality(response))
+    #price = locu_setup.get_price_of_mains(get_name_nonenc(response), get_locality(response))
     if price != None:
         print "The average price per person at this restaurant is:"
         print price

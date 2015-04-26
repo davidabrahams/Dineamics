@@ -1,5 +1,6 @@
 import os
 from flask import Flask, render_template, request, redirect
+from api import user, optimize_category
 
 app = Flask(__name__)
 
@@ -38,6 +39,12 @@ def getstarted():
 
 @app.route('/results')
 def results():
+    users = user.create_users(foodtypes, locations, prices)
+    rests = optimize_category.get_best_restaurants(users)
+    top_rest = rests[0]
+    name = top_rest.name
+    image = top_rest.image
+    print top_rest
     return render_template('results.html')
 
 if __name__=="__main__":

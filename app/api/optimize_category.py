@@ -19,9 +19,9 @@ def get_rest_score_dict(list_of_lists_of_restaurants, users, weights):
     for list, user, weight in zip(list_of_lists_of_restaurants, users, weights):
         for i, restaurant in enumerate(list):
             if restaurant in rest_to_score:
-                rest_to_score[restaurant] = rest_to_score[restaurant] + rank_to_score_price(i, float(user.price_max), restaurant.price) * weight
+                rest_to_score[restaurant] = rest_to_score[restaurant] + rank_to_score_price(i, user.price_max, restaurant.price) * weight
             else:
-                rest_to_score[restaurant] = rank_to_score_price(i, float(user.price_max), restaurant.price) * weight
+                rest_to_score[restaurant] = rank_to_score_price(i, user.price_max, restaurant.price) * weight
 
     return rest_to_score
 
@@ -80,7 +80,6 @@ def get_best_restaurants(users):
     rests_to_score = user.get_users_restaurants(users_to_test)
     print "Using weights: " + str(weights)
     rest_score_dict = get_rest_score_dict(rests_to_score, users, weights)
-    print get_sorted_as_list(rest_score_dict)
     return extract_from_list(get_sorted_as_list(rest_score_dict))
 
 
