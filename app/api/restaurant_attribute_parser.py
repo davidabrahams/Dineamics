@@ -29,8 +29,11 @@ def get_address(response):
     thing = []
     address = response["location"]["display_address"]
     for item in address:
-        item = str(item)
-        thing.append(item)
+        try:
+            string = str(item)
+            thing.append(string)
+        except UnicodeEncodeError, e:
+            print 'Could not encode ' + item + ' into address for ' + get_name(response)
     return thing
 
 

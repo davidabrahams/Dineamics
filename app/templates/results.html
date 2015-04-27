@@ -15,7 +15,7 @@
 			<div data-role="header" class=".ui-header">
 				<div align="center">
 					<br/>
-					<img src="{{ url_for('static', filename = 'images/logo.png') }}" style="width: 17%" class="center"/>
+					<img src="{{ url_for('static', filename = 'images/logo.png') }}" style="width: 35%" class="center"/>
 				</div>
 			</div>
 
@@ -23,11 +23,12 @@
 				<h2 align="center">You're going out tonight!</h2>
 				<h1 align="center">{{ name }}</h1>
 
-				<font size="4">distance:</font>
-				<font size="5" color="#FFDA6D">7.5</font>
+				<font size="4">address:</font>
+				<br/>
+				<font size="5" color="#FFDA6D">{{ address }}</font>
 				<br/>
 				<font  size="4">average price:</font>
-				<font size="5" color="#FFDA6D">$25</font>
+				<font size="5" color="#FFDA6D">{{ price }}</font>
 				<br/>
 				<br/>
 
