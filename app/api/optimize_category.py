@@ -10,7 +10,7 @@ def rank_to_score(rank):
 def rank_to_score_price(rank, user_price, rest_price):
     deduction = 0
     if rest_price != None and (rest_price > user_price):
-        deduction = (rest_price - user_price + 0.0) / user_price * 200
+        deduction = (rest_price - user_price + 0.0) / user_price * 30
     return 40 - rank - deduction
 
 
