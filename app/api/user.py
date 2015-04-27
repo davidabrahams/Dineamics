@@ -1,6 +1,7 @@
 __author__ = 'davidabrahams'
 
 import locu_database, restaurant, locu_setup, api, restaurant_attribute_parser, yelp_database
+from unidecode import unidecode
 
 LOCU_FILE_NAME = 'locu_database.txt'
 YELP_FILE_NAME = 'yelp_database.txt'
@@ -39,6 +40,7 @@ class User(object):
             image = restaurant_attribute_parser.get_image(response)
             unenc_name = restaurant_attribute_parser.get_name_nonenc(response)
             url = restaurant_attribute_parser.get_url(response)
+            display_name = unidecode(unenc_name)
 
             if ((unenc_name, locality)) in database.data:
                 print 'Found ' + unenc_name + ' in Locu database!'
@@ -50,7 +52,7 @@ class User(object):
 
             price = locu_setup.get_price_of_mains(menu)
 
-            rest = restaurant.Restaurant(name, address, locality, categories, price, image, unenc_name, url)
+            rest = restaurant.Restaurant(name, address, locality, categories, price, image, unenc_name, url, display_name)
             restaurants.append(rest)
         return restaurants
 

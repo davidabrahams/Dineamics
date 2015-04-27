@@ -2,7 +2,7 @@ __author__ = 'davidabrahams'
 
 
 class Restaurant(object):
-    def __init__(self, name, address, locality, categories, price, image, unencoded_name, url):
+    def __init__(self, name, address, locality, categories, price, image, unencoded_name, url, display_name):
         self.name = name
         self.address = address
         self.locality = locality
@@ -11,6 +11,7 @@ class Restaurant(object):
         self.image = image
         self.unencoded_name = unencoded_name
         self.url = url
+        self.display_name = display_name
 
     def __str__(self):
         return self.name + ', ' + self.locality + ', ' + self.image
