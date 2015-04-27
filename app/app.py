@@ -42,10 +42,7 @@ def results():
     users = user.create_users(foodtypes, locations, prices)
     rests = optimize_category.get_best_restaurants(users)
     top_rest = rests[0]
-    name = top_rest.name
-    image = top_rest.image
-    print top_rest
-    return render_template('results.html')
+    return render_template('results.html', name=top_rest.name, image=top_rest.image, url=top_rest.url)
 
 if __name__=="__main__":
     app.debug = True

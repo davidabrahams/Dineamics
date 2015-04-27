@@ -17,7 +17,10 @@ def get_name_nonenc(response):
 
 
 def get_image(response):
-    return response["image_url"]
+    if "image_url" in response:
+        return response["image_url"]
+    else:
+        return None
 
 def get_url(response):
     return response["mobile_url"]

@@ -21,7 +21,7 @@
 
 			<div data-role="main" class="ui-content ui-body" align="center">
 				<h2 align="center">You're going out tonight!</h2>
-				<h1 align="center">Neptune Oyster</h1>
+				<h1 align="center">{{ name }}</h1>
 
 				<font size="4">distance:</font>
 				<font size="5" color="#FFDA6D">7.5</font>
@@ -31,9 +31,9 @@
 				<br/>
 				<br/>
 
-				<img src="{{ url_for('static', filename = 'images/Neptune-5.jpg') }}" style="width: 35%" class="center"/>
+				<img src="{{ image }}" style="width: 35%" class="center"/>
 				<br/>
-				<input type="submit" value="Make a Reservation!">
+				<input type="submit" href="{{ url }}" value="Make a Reservation!">
 				<input data-icon="arrow-r" type="submit" value="Next Restaurant">
 
 			</div>
