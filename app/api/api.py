@@ -10,19 +10,19 @@ This program requires the Python oauth2 library, which you can install via:
 Sample usage of the program:
 `python sample.py --term="bars" --location="San Francisco, CA"`
 """
+
+# This code originated from https://github.com/Yelp/yelp-api/blob/master/v2/python/sample.py. Slight modifications have been made.
 import argparse
 import json
-import pprint
 import sys
 import urllib
 import urllib2
-
 import oauth2
 
 
 API_HOST = 'api.yelp.com'
-# DEFAULT_TERM = 'sushi'
-# DEFAULT_LOCATION = 'Boston, MA'
+DEFAULT_TERM = 'sushi'
+DEFAULT_LOCATION = 'Boston, MA'
 SEARCH_LIMIT = 20
 SEARCH_PATH = '/v2/search/'
 BUSINESS_PATH = '/v2/business/'

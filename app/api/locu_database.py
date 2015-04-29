@@ -1,17 +1,22 @@
-"""Pickling the Menu data from locu query"""
-
 from os.path import exists
-import sys
 import pickle
-#import MySQLdb
-#import cPickle
 
 
 class MenuDatabase(object):
+    """
+    A class that contains menu information for restaurants. Contains a data member self.data, which is a dictionary mapping from (unencoded_restaurant_name, locality) to menu.
+    """
     def __init__(self):
         self.data = {}
 
     def save(self, file_name):
+        """Pickles the MenuDatabase object to a file.
+
+        Args:
+            file_name (str): The filename to save the database to.
+        """
+
+
         if not exists(file_name):
             f = open(file_name, 'w')
         else:
@@ -20,23 +25,18 @@ class MenuDatabase(object):
         pickle.dump(self, f)
         f.close()
 
-        """
-        print self.data
-        pickled = cPickle.dumps(self.data)
-        print pickled
-
-        connection = MySQLdb.connect('127.0.0.1', 'testuser', 'test123', 'testdb')
-        cursor = connection.cursor()
-        cursor.execute("DROP TABLE IF EXISTS Locu")
-        cursor.execute("CREATE TABLE Locu(Id INT PRIMARY KEY AUTO_INCREMENT,  card VARCHAR(25),  features BLOB)")
-        cursor.execute("INSERT INTO Locu VALUES (NULL, 'testCard', %s)", (pickled, ))
-        """
-
     def __str__(self):
         return str(self.data)
 
 
 def load(file_name):
+    """Loads a pickled MenuDatabase object from a file and returns it.
+    Args:
+        file_name (str): The filename to load the database from.
+    Returns:
+        obj (MenuDatabase): The MenuDatabase object pickled to the file
+    """
+
     if not exists(file_name):
         return MenuDatabase()
     else:
@@ -45,26 +45,3 @@ def load(file_name):
         obj = pickle.load(f)
         f.close()
         return obj
-
-    """
-
-    connection = MySQLdb.connect('127.0.0.1', 'testuser', 'test123', 'testdb')
-    cursor = connection.cursor()
-
-    cursor.execute("SHOW TABLES LIKE 'Locu'")
-    result = cursor.fetchone()
-    database = None
-    if result:
-
-        cursor.execute("SELECT features FROM Locu WHERE card = 'testCard'")
-        rows = cursor.fetchall()
-        print rows
-        for each in rows:
-            print 'UNPICKLED!!!'
-            for pickled_database in each:
-                unpickled = cPickle.loads(pickled_database)
-                return unpickled
-        return MenuDatabase()
-    else:
-        return MenuDatabase()
-    """
