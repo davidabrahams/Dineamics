@@ -1,6 +1,7 @@
 import urllib
 import urllib2
 import json
+import numpy
 from unidecode import unidecode
 
 LOCU_BASE = 'http://api.locu.com/v1_0/venue/search/?'
@@ -14,6 +15,7 @@ def get_locu_url(name, locality):
     :return: A url to query the locu api
     """
     return LOCU_BASE + urllib.urlencode([('name', unidecode(name)), ('locality', locality), ('api_key', API_KEY)])
+
 
 def get_ID(name, locality):
     """
@@ -55,44 +57,38 @@ def get_menu(name, locality):
         return None
 
 
-def filter_data(menu):
-    response_data = menu
+def get_prices_from_menu(menu):
+    """
+    :param menu: a list of dicts returned by the get_menu(name, locality) function
+    :return: a list of prices that appear on a restaurant's menu.
+    """
 
     prices = []
-    key = 'price'
-    if response_data != None:
 
-        for entry in response_data:
+    if menu != None:
 
-            sections = entry['sections']
-
-            for section in sections:
-
-                subsections = section['subsections']
-
-                for subsection in subsections:
-
-                    contents = subsection['contents']
-
-                    for content in contents:
-
+        for entry in menu:
+            for section in entry['sections']:
+                for subsection in section['subsections']:
+                    for content in subsection['contents']:
                         if 'price' in content:
-
                             money = (content['price'].encode('utf-8'))
-
                             try:
                                 money = float(money)
                                 prices.append(money)
                             except ValueError:
-                                #If the string can't be converted to a float, leave it the fuck alone
-                                pass
+                                pass  # If the string can't be converted to a float, leave it alone
 
     return prices
 
 
 def get_price_of_mains(menu):
+    """
+    :param menu: a Locu menu returned by get_menu(name, locality)
+    :return: An approximation for the average price of a main course at the restaurant. Found by calculating the average of all the prices in the 50th-75th percentile by price of the restaurant's menu.
+    """
 
-    prices = filter_data(menu)
+    prices = get_prices_from_menu(menu)
 
     if len(prices) >= 4:
 
@@ -103,15 +99,14 @@ def get_price_of_mains(menu):
         try:
             return round(sum(sorted_prices[num:num1]) / (num1 - num), 2)
         except ZeroDivisionError:
-            print 'Taking the average failed. The menu contained the following prices:'
-            print prices
-            return None
+            print 'Taking the average failed. The menu contained the following prices: ' + str(prices)
+            return numpy.mean(prices)
     else:
-        return None
+        return numpy.mean(prices)
 
 
 if __name__ == '__main__':
     name = 'Neptune Oyster'
     locality = 'Boston'
-    print filter_data(get_menu(name, locality))
+    print get_prices_from_menu(get_menu(name, locality))
 
