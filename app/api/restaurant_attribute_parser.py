@@ -2,10 +2,12 @@
 This module is used to return attributes from a restaurant obtained from a Yelp API query
 """
 
-import locu_setup, api
+import api
 
 TERM = 'mexican'
 LOCATION = 'Boston, MA'
+
+# The following methods all extract a certain piece of data about a restaurant from a response returned by a Yelp API query.
 
 
 def get_name(response):

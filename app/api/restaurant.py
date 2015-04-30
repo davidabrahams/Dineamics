@@ -2,6 +2,8 @@ __author__ = 'davidabrahams'
 
 
 class Restaurant(object):
+    """ A class representing a restaurant. Contains fields such as its name, address, categories, etc. All info returned by Yelp API
+    """
     def __init__(self, name, address, locality, categories, price, image, unencoded_name, url, display_name):
         self.name = name
         self.address = address
