@@ -2,7 +2,7 @@ from collections import Counter
 
 __author__ = 'davidabrahams'
 
-import locu_database, restaurant, locu_setup, api, restaurant_attribute_parser, yelp_database
+import locu_database, restaurant, locu_query, yelp_query, restaurant_attribute_parser, yelp_database
 from unidecode import unidecode
 
 LOCU_FILE_NAME = 'locu_database.txt'
@@ -40,7 +40,7 @@ class User(object):
         # Otherwise, make a Yelp API query
         else:
             print 'Querying Yelp for ' + self.term + '...'
-            responses = api.get_restaurant_responses(self.term, self.location)
+            responses = yelp_query.get_restaurant_responses(self.term, self.location)
             yelp_database.data[(self.term, self.location)] = responses
 
         # Each response in responses represents a restaurant. Create a Restaurant out of it.
@@ -61,11 +61,11 @@ class User(object):
             #Otherwise, make a Locu query for the menu
             else:
                 print 'Querying Locu for ' + unenc_name + '...'
-                menu = locu_setup.get_menu(unenc_name, locality)
+                menu = locu_query.get_menu(unenc_name, locality)
                 locu_database.data[(unenc_name, locality)] = menu
 
             # get the average price of mains from the Locu menu
-            price = locu_setup.get_price_of_mains(menu)
+            price = locu_query.get_price_of_mains(menu)
 
             # create the restaurant object
             rest = restaurant.Restaurant(name, address, locality, categories, price, image, unenc_name, url, display_name)

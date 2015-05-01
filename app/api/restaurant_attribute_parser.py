@@ -2,7 +2,7 @@
 This module is used to return attributes from a restaurant obtained from a Yelp API query
 """
 
-import api
+import yelp_query
 
 TERM = 'mexican'
 LOCATION = 'Boston, MA'
@@ -60,7 +60,7 @@ def query_and_print_restaurant(TERM, LOCATION):
     Makes an API Query using the TERM and LOCATION parameters. Then parses the response data and prints it. Also finds
     price information from Locu API query.
     """
-    response = api.get_restaurant_response(TERM, LOCATION)
+    response = yelp_query.get_restaurant_response(TERM, LOCATION)
 
     print response
 
