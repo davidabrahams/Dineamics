@@ -23,6 +23,50 @@ Certain dependencies may need to be filled. Try the following commands to instal
     $ pip install unidecode
     $ pip install flask
 
+## Optimization Algorithm
+
+The following is a code excerpt showing how we optimize the restaurants based on multiple users.
+
+	def get_best_restaurants(users):
+	    """
+	    :param users: a list of Users
+	    :return: The top restaurants, optimized for the user group.
+	    """
+	    users_to_test = list(users)
+	    # set the initial user weights to 1.0
+	    weights = [1.0] * len(users_to_test)
+
+	    # find the top categories for the users by first getting their restaurants
+	    user_rests = user.get_users_restaurants(users)
+	    # then getting the top categories
+	    cat_dict = get_cat_score_dict(user_rests)
+	    categories = extract_from_list(get_sorted_as_list(cat_dict))
+
+	    # get the average price and location for users
+	    price, location = user.average_price_location(users)
+
+	    # search for up to 3 additional categories
+	    new_cats = []
+	    current_terms = [u.term.lower() for u in users]
+	    index = 0
+	    count = 0
+	    while count < 3 and index < len(categories):
+	        if categories[index] not in current_terms:
+	            count += 1
+	        new_cats.append(categories[index])
+	        index += 1
+	    for c in new_cats:
+	        users_to_test.append(user.User(c, location, price))
+	        weights.append((cat_dict[c] + 0.0) / cat_dict[new_cats[0]])
+
+	    # get the restaurants from our original users and the top categories
+	    rests_to_score = user.get_users_restaurants(users_to_test)
+	    print "Using weights: " + str(weights)
+
+	    # return the top restaurants
+	    rest_score_dict = get_rest_score_dict(rests_to_score, users, weights)
+	    return extract_from_list(get_sorted_as_list(rest_score_dict))
+
 ## Contributors
 
 David Abrahams, TJ Kim, Alix McCabe, Hannah Twigg-Smith,
