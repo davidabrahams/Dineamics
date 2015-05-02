@@ -34,8 +34,11 @@
 
 				<img src="{{ image }}" style="width: 35%" class="center"/>
 				<br/>
-				<input type="submit" href="{{ url }}" value="Make a Reservation!">
-				<input data-icon="arrow-r" type="submit" value="Next Restaurant">
+				<a href="{{ url }}" data-role="button">Visit the Yelp page!</a>
+
+				<form action="/results2" method="post">
+					<input type="submit" name="submit" value="Next restaurant!"></input>
+				</form>
 
 			</div>
 

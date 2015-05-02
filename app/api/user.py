@@ -4,6 +4,7 @@ __author__ = 'davidabrahams'
 
 import locu_database, restaurant, locu_query, yelp_query, restaurant_attribute_parser, yelp_database
 from unidecode import unidecode
+import pprint
 
 LOCU_FILE_NAME = 'locu_database.txt'
 YELP_FILE_NAME = 'yelp_database.txt'
@@ -42,6 +43,8 @@ class User(object):
             print 'Querying Yelp for ' + self.term + '...'
             responses = yelp_query.get_restaurant_responses(self.term, self.location)
             yelp_database.data[(self.term, self.location)] = responses
+
+        print responses[0]
 
         # Each response in responses represents a restaurant. Create a Restaurant out of it.
         for i, response in enumerate(responses):
@@ -112,7 +115,7 @@ def average_price_location(users):
     price = sum(price)/len(price)
 
     c = Counter(location)
-    loc = c.most_common(1)[0]
+    loc = c.most_common(1)[0][0]
 
     return price, loc
 
