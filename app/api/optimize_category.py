@@ -122,7 +122,7 @@ def get_best_restaurants(users):
     print "Using weights: " + str(weights)
 
     # return the top restaurants
-    rest_score_dict = get_rest_score_dict(rests_to_score, users, weights)
+    rest_score_dict = get_rest_score_dict(rests_to_score, users_to_test, weights)
     return extract_from_list(get_sorted_as_list(rest_score_dict))
 
 
