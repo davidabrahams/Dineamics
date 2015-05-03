@@ -6,13 +6,16 @@ app = Flask(__name__)
 foodtypes = []
 locations = []
 prices = []
+item = 0
 
 @app.route('/')
 def index():
-    del foodtypes[:]
-    del locations[:]
-    del prices[:]
+    del foodtypes[:], locations[:], prices[:]
     return render_template('index.html')
+
+@app.route('/getstarted', methods = ['POST'])
+def getstarted():
+    return redirect('/search')
 
 @app.route('/search')
 def search():
@@ -30,26 +33,23 @@ def nextperson():
         return redirect('/search')
     elif request.form['submit'] == "Find me a restaurant!":
         return redirect('/results')
-
-
-@app.route('/getstarted', methods = ['POST'])
-def getstarted():
-    return redirect('/search')
+    elif request.form['submit'] == "Start Over":
+        return redirect('/')
 
 @app.route('/results')
 def results():
     users = user.create_users(foodtypes, locations, prices)
     rests = optimize_category.get_best_restaurants(users)
-    top_rest = rests[0]
+    top_rest = rests[item]
     return render_template('results.html', name=top_rest.display_name, image=top_rest.image, url=top_rest.url, price=top_rest.price, address=top_rest.address)
 
-@app.route('/results2')
-def results2():
-    users = user.create_users(foodtypes, locations, prices)
-    rests = optimize_category.get_best_restaurants(users)
-    top_rest = rests[1]
-    if request.form['submit'] == "Next Restaurant!":
-        return render_template('results.html', name=top_rest.display_name, image=top_rest.image, url=top_rest.url, price=top_rest.price, address=top_rest.address)
+@app.route('/next', methods = ['POST'])
+def next():
+    item = 3
+    if request.form['submit'] == "Next restaurant!":
+        return redirect('/results')
+    elif request.form['submit'] == "Start Over":
+        return redirect('/')
 
 if __name__=="__main__":
     app.debug = True
