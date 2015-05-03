@@ -6,11 +6,12 @@ app = Flask(__name__)
 foodtypes = []
 locations = []
 prices = []
-item = 0
+rest_index = 0
 
 @app.route('/')
 def index():
     del foodtypes[:], locations[:], prices[:]
+    rest_index = 0
     return render_template('index.html')
 
 @app.route('/getstarted', methods = ['POST'])
@@ -40,16 +41,23 @@ def nextperson():
 def results():
     users = user.create_users(foodtypes, locations, prices)
     rests = optimize_category.get_best_restaurants(users)
-    top_rest = rests[item]
-    return render_template('results.html', name=top_rest.display_name, image=top_rest.image, url=top_rest.url, price=top_rest.price, address=top_rest.address)
+    top_rest = rests[rest_index]
+    rest_address = ""
+    for piece in top_rest.address[0:-1]:
+        rest_address += piece + ", "
+    rest_address += top_rest.address[-1]
+    return render_template('results.html', name=top_rest.display_name, image=top_rest.image, url=top_rest.url, price=top_rest.price, address=rest_address)
 
 @app.route('/next', methods = ['POST'])
 def next():
-    item = 3
+    global rest_index
     if request.form['submit'] == "Next restaurant!":
+        rest_index = rest_index + 1
         return redirect('/results')
     elif request.form['submit'] == "Start Over":
+        rest_index = 0
         return redirect('/')
+
 
 if __name__=="__main__":
     app.debug = True
